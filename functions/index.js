@@ -28,7 +28,7 @@ const app = express();
 /** Enable CORS to allow request from all origins */
 app.use(
     cors({
-        origin: 'http://localhost:8000'
+        origin: ['http://localhost:8000', 'https://manavchawla3.github.io']
     })
 );
 app.use(bodyParser.json());
@@ -106,22 +106,17 @@ app.post('/', (request, response) => {
         service: 'gmail',
         auth: auth
     });
-    // return response.json({
-    //     status: 200,
-    //     message: 'Mail Sent Successfully'
-    // });
+
     transporter.sendMail(mailOptions, (err, res) => {
         if (err) {
-            response.statusCode = 500;
-            response.json({
+            response.status(500).json({
                 status: 500,
                 message: 'Error while sending mail',
                 error: err
             });
             console.log(err);
         } else {
-            response.statusCode = 200;
-            response.json({
+            response.status(200).json({
                 status: 200,
                 message: 'Mail Sent Successfully'
             });
